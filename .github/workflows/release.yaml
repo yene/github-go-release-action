@@ -11,7 +11,7 @@ on:
       version:
         description: 'Version'
         required: true
-        default: 'v0.1.0'
+        default: '0.1.0'
 
 jobs:
   build:
@@ -32,6 +32,23 @@ jobs:
       with:
         file: ${{env.NAME}}-linux
 
+    - name: Build macOS
+      run: env GOOS=darwin GOARCH=amd64 go build -o ${NAME}-macos
+
+    - name: UPX macOS
+      uses: crazy-max/ghaction-upx@v1.3.3
+      with:
+        file: ${{env.NAME}}-macos
+
+    - name: Release
+      uses: anton-yurchenko/git-release@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DRAFT_RELEASE: "true"
+        ALLOW_EMPTY_CHANGELOG: "true"
+      with:
+        args: |
+            ${{env.NAME}}-linux
 
 # misc
 # https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
