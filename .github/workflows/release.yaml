@@ -1,0 +1,28 @@
+# .github/workflows/release.yaml
+name: Release
+
+env:
+  NAME: helloworld
+
+# manually trigger in the actions tab
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.15
+
+    - name: Build Linux
+      run: env GOOS=linux GOARCH=amd64 go build -o ${NAME}-linux
+      
+    - name: UPX Linux
+      uses: crazy-max/ghaction-upx@v1.3.3
+      with:
+        file: ${NAME}-linux
