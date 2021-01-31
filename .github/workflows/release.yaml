@@ -1,12 +1,19 @@
 # .github/workflows/release.yaml
 name: Release
 
+inputs:
+  version:
+    description: 'Version'
+    required: true
+    default: 'v0.1.0'
+
 env:
   NAME: helloworld
 
 # manually trigger in the actions tab
 on:
   workflow_dispatch:
+
 
 jobs:
   build:
@@ -25,4 +32,10 @@ jobs:
     - name: UPX Linux
       uses: crazy-max/ghaction-upx@v1.3.3
       with:
-        file: ${NAME}-linux
+        file: ${{env.NAME}}-linux
+
+
+# misc
+# https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
+# ${{ runner.OS }}
+
