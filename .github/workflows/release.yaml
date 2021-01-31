@@ -1,19 +1,17 @@
 # .github/workflows/release.yaml
 name: Release
 
-inputs:
-  version:
-    description: 'Version'
-    required: true
-    default: 'v0.1.0'
-
 env:
   NAME: helloworld
 
 # manually trigger in the actions tab
 on:
   workflow_dispatch:
-
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        default: 'v0.1.0'
 
 jobs:
   build:
