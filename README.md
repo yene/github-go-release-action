@@ -1,6 +1,6 @@
 # GitHub Go Release Example Workflow
-Example on how to use Github actions to release simple Go binaries.
-[.github/workflows/release.yaml](/.github/workflows/release.yaml)
+Example on how to use Github actions to release simple Go binaries.<br>
+[.github/workflows/release.yaml](/.github/workflows/release.yaml)<br>
 `binary version` prints version and Git hash.
 
 ## Features
