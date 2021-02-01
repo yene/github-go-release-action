@@ -3,7 +3,7 @@ name: Release
 
 env:
   NAME: helloworld
-  INOUT_VERSION: ${{ github.event.inputs.version }}
+  INPUT_VERSION: ${{ github.event.inputs.version }}
   
 # manually trigger in the actions tab
 on:
