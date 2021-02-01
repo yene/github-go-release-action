@@ -25,7 +25,7 @@ jobs:
         go-version: 1.15
 
     - name: Build Linux
-      run: env GOOS=linux GOARCH=amd64 go build -o ${NAME}-linux
+      run: env GOOS=linux GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-linux
       
     - name: UPX Linux
       uses: crazy-max/ghaction-upx@v1.3.3
@@ -33,13 +33,12 @@ jobs:
         file: ${{env.NAME}}-linux
 
     - name: Build macOS
-      run: env GOOS=darwin GOARCH=amd64 go build -o ${NAME}-macos
+      run: env GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-macos
 
     - name: UPX macOS
       uses: crazy-max/ghaction-upx@v1.3.3
       with:
-        file: ${{env.NAME}}-macos
-
+        file: ${{ env.NAME }}-macos
     
     # https://github.com/marketplace/actions/tag-and-release
     - name: Create Release
@@ -55,8 +54,30 @@ jobs:
         draft: true
         prerelease: false
 
+    # https://github.com/actions/upload-release-asset
+    - name: Upload Release macOS
+      id: upload-release-asset-macos
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./${{ env.NAME }}-macos
+        asset_name: ${{ env.NAME }}-macos
+        asset_content_type: application/octet-stream
+    - name: Upload Release Linux
+      id: upload-release-asset-linux
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./${{ env.NAME }}-linux
+        asset_name: ${{ env.NAME }}-linux
+        asset_content_type: application/octet-stream
+
 # misc
 # https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
 # ${{ runner.OS }}
 # ${{ github.event.inputs.version }}
-
+# https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
