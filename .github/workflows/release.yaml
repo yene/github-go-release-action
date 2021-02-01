@@ -23,7 +23,8 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15
-    - run: env
+    #- run: env
+    #- run: date && timedatectl
     - name: Build Linux
       run: env GOOS=linux GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-linux
     - name: UPX Linux
@@ -32,7 +33,8 @@ jobs:
         file: ${{env.NAME}}-linux
 
     - name: Build Linux Arm
-      run: env GOOS=linux GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-linux-arm
+      # GOARM=6 (Raspberry Pi A, A+, B, B+, Zero) GOARM=7 (Raspberry Pi 2, 3)
+      run: env GOARM=6 GOOS=linux GOARCH=arm go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-linux-arm
     - name: UPX Linux Arm
       uses: crazy-max/ghaction-upx@v1.3.3
       with:
