@@ -1,10 +1,11 @@
 # GitHub Go Release Example Workflow
-Example on how to use Github actions to release simple Go binaries.<br>
-[.github/workflows/release.yaml](/.github/workflows/release.yaml)<br>
-`binary version` prints version and Git hash.
+Example on how a Github action can create a release draft and attach compiled Go binaries.<br>
+[.github/workflows/release.yaml](/.github/workflows/release.yaml)
 
 ## Features
-- [x] build for macos, linux, linux arm
+- [x] Binaries have a version subcommand that prints Version and Git hash.
+- [x] build for macOS, linux, linux arm
+- [ ] build mach-o for macOS amd64+arm64
 - [x] build for windows
 - [x] include version and Git hash in binary
 - [x] compress build with upx

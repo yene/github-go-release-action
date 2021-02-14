@@ -1,10 +1,9 @@
-# .github/workflows/release.yaml
-name: Release
+name: Draft Release
 
 env:
   NAME: helloworld
   INPUT_VERSION: ${{ github.event.inputs.version }}
-  
+
 # manually trigger in the actions tab
 on:
   workflow_dispatch:
@@ -23,8 +22,9 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15
-    #- run: env
-    #- run: date && timedatectl
+
+    - name: Go Version
+      run: go version
     - name: Build Linux
       run: env GOOS=linux GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-linux
     - name: UPX Linux
@@ -53,7 +53,7 @@ jobs:
       uses: crazy-max/ghaction-upx@v1.3.3
       with:
         file: ${{ env.NAME }}-windows.exe
-      
+
     # https://github.com/marketplace/actions/tag-and-release
     - name: Create Release
       id: create_release
@@ -109,9 +109,3 @@ jobs:
         asset_path: ./${{ env.NAME }}-windows.exe
         asset_name: ${{ env.NAME }}-windows.exe
         asset_content_type: application/octet-stream
-
-# misc
-# https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
-# ${{ runner.OS }}
-# ${{ github.event.inputs.version }}
-# https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
