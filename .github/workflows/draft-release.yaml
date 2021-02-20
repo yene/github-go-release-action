@@ -48,16 +48,6 @@ jobs:
       run: |
         env GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-macos-amd
         env GOOS=darwin GOARCH=arm64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-macos-arm
-    - name: UPX macOS arm
-      uses: crazy-max/ghaction-upx@v1.3.3
-      with:
-        file: ${{ env.NAME }}-macos-arm
-    - name: UPX macOS amd
-      uses: crazy-max/ghaction-upx@v1.3.3
-      with:
-        file: ${{ env.NAME }}-macos-amd
-    - name: Build macOS (amd64/arm64)
-      run: |
         makefat ${NAME}-macos ${NAME}-macos-amd ${NAME}-macos-arm
 
     - name: Build Windows
