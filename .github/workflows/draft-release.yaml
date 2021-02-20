@@ -27,7 +27,7 @@ jobs:
     - name: Install Dependencies
       run: |
         pwd
-        go install github.com/randall77/makefat/
+        go install github.com/randall77/makefat@latest
         echo $PATH
         ls
         go version

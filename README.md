@@ -13,7 +13,7 @@ Example on how a Github action can create a release draft and attach compiled Go
 ## How to make Universal Golang Binaries with Go 1.16
 Combine them manually:
 ```
-go install github.com/randall77/makefat/
+go install github.com/randall77/makefat@latest
 GOOS=darwin GOARCH=amd64 go build -o binary-macos-amd64
 GOOS=darwin GOARCH=arm64 go build -o binary-macos-arm64
 makefat binary-mac-fat binary-macos-amd64 binary-macos-arm64
