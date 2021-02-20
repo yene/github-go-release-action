@@ -15,6 +15,7 @@ on:
 
 jobs:
   build:
+    name: Draft Release
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
@@ -23,10 +24,13 @@ jobs:
       with:
         go-version: 1.16
 
-    - name: Go Version
-      run: go version
-    - name: install makefat
-      run: go version
+    - name: Install Dependencies
+      run: |
+        pwd
+        go install github.com/randall77/makefat/
+        echo $PATH
+        ls
+        go version
     - name: Build Linux
       run: env GOOS=linux GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-linux
     - name: UPX Linux
