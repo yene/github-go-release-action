@@ -54,7 +54,7 @@ jobs:
     - name: UPX macOS arm
       uses: crazy-max/ghaction-upx@v1.3.3
       with:
-        file: ${{ env.NAME }}-macos
+        file: ${{ env.NAME }}-macos-arm
     - name: makefat
       run: makefat binary-mac-fat ${NAME}-macos ${NAME}-macos-arm
 
