@@ -5,7 +5,7 @@ Example on how a Github action can create a release draft and attach compiled Go
 ## Features
 - [x] Binaries have a version subcommand that prints Version and Git hash.
 - [x] build for macOS, linux, linux arm
-- [ ] build mach-o for macOS amd64+arm64
+- [x] build mach-o for macOS amd64+arm64
 - [x] build for windows
 - [x] include version and Git hash in binary
 - [x] compress build with upx
@@ -16,7 +16,7 @@ Combine them manually:
 go install github.com/randall77/makefat@latest
 GOOS=darwin GOARCH=amd64 go build -o binary-macos-amd64
 GOOS=darwin GOARCH=arm64 go build -o binary-macos-arm64
-makefat binary-mac-fat binary-macos-amd64 binary-macos-arm64
+makefat binary-macos binary-macos-amd64 binary-macos-arm64
 ```
 
 ## Other inspirations

@@ -26,11 +26,8 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        pwd
-        go install github.com/randall77/makefat@latest
-        echo $PATH
-        ls
         go version
+        go install github.com/randall77/makefat@latest
     - name: Build Linux
       run: env GOOS=linux GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-linux
     - name: UPX Linux
@@ -46,21 +43,16 @@ jobs:
       with:
         file: ${{env.NAME}}-linux-arm
 
-    - name: Build macOS
-      run: env GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-macos
+      # Creating Mach-O with both architectures
+    - name: Build macOS (amd64/arm64)
+      run: |
+        env GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-macos-amd
+        env GOOS=darwin GOARCH=arm64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-macos-arm
+        makefat ${NAME}-macos ${NAME}-macos-amd ${NAME}-macos-arm
     - name: UPX macOS
       uses: crazy-max/ghaction-upx@v1.3.3
       with:
         file: ${{ env.NAME }}-macos
-
-    - name: Build macOS arm
-      run: env GOOS=darwin GOARCH=arm64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-macos-arm
-    - name: UPX macOS arm
-      uses: crazy-max/ghaction-upx@v1.3.3
-      with:
-        file: ${{ env.NAME }}-macos-arm
-    - name: makefat
-      run: makefat binary-mac-fat ${NAME}-macos ${NAME}-macos-arm
 
     - name: Build Windows
       run: env GOOS=windows GOARCH=amd64 go build -ldflags "-X main.BuildVersion=$INPUT_VERSION -X main.GitCommit=$GITHUB_SHA" -o ${NAME}-windows.exe
