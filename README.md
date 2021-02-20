@@ -10,6 +10,15 @@ Example on how a Github action can create a release draft and attach compiled Go
 - [x] include version and Git hash in binary
 - [x] compress build with upx
 
+## How to make Universal Golang Binaries with Go 1.16
+Combine them manually:
+```
+go install github.com/randall77/makefat/
+GOOS=darwin GOARCH=amd64 go build -o binary-macos-amd64
+GOOS=darwin GOARCH=arm64 go build -o binary-macos-arm64
+makefat binary-mac-fat binary-macos-amd64 binary-macos-arm64
+```
+
 ## Other inspirations
 * Maybe name the assets like rclone-v1.53.4-osx-amd64.zip
 * Create a fat macho binary for macOS with amd+arm
