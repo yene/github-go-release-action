@@ -1,4 +1,4 @@
-name: Watch Release
+name: ReleaseOnCommit
 
 env:
   NAME: helloworld
@@ -28,14 +28,16 @@ jobs:
         run: |
           VER=$(cat version.txt | tr -d '\n')
           echo "VERSION=$VER" >> $GITHUB_ENV
+          COMMIT_TITLE=$(git log --format=%B -n 1 HEAD | head -n 1)
+          echo "COMMIT_TITLE=$COMMIT_TITLE" >> $GITHUB_ENV
+          COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD | tail -n +3)
+          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
 
-      - name: Persist Version and Commit
+      - name: Persist Commit
         run: |
           go version
           timedatectl
-          echo $GITHUB_SHA
           echo $GITHUB_SHA > commit.txt
-          echo "${{github.event.commits[0].message}}"
       - name: Build Linux
         run: env GOOS=linux GOARCH=amd64 go build -o ${NAME}-linux
       - name: UPX Linux
@@ -80,9 +82,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ env.VERSION }}
-          release_name: ${{ env.NAME }} v${{ env.VERSION }}
-          body: |
-            ${{github.event.commits[0].message}}
+          release_name: ${{ env.COMMIT_TITLE }}
+          body: ${{env.COMMIT_MESSAGE}}
           draft: false
           prerelease: false
 
