@@ -1,5 +1,5 @@
 # manually trigger the action to create a release draft
-name: Draft Release
+name: MacOS
 
 env:
   NAME: helloworld
@@ -29,7 +29,6 @@ jobs:
         run: |
           uname
           go version
-          timedatectl
           echo $INPUT_VERSION
           echo $INPUT_VERSION > version.txt
           echo $GITHUB_SHA
