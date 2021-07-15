@@ -1,3 +1,4 @@
+# When version.txt is pushed, the commit body is used as release text.
 name: ReleaseOnCommit
 
 env:
@@ -28,8 +29,6 @@ jobs:
         run: |
           VER=$(cat version.txt | tr -d '\n')
           echo "VERSION=$VER" >> $GITHUB_ENV
-          COMMIT_TITLE=$(git log --format=%B -n 1 HEAD | head -n 1)
-          echo "COMMIT_TITLE=$COMMIT_TITLE" >> $GITHUB_ENV
           git log --format=%B -n 1 HEAD | tail -n +3 > body.md
 
       - name: Persist Commit
@@ -80,7 +79,7 @@ jobs:
         with:
           artifacts: "${{ env.NAME }}-*"
           tag: v${{ env.VERSION }}
-          name: ${{ env.COMMIT_TITLE }}
+          name: v${{ env.VERSION }}
           bodyFile: "body.md"
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
