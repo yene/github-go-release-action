@@ -1,5 +1,8 @@
 # GitHub Go Release Example Workflow
-Example on how a Github action can create a release draft and attach compiled Go binaries.<br>
+Example how a Github action can trigger a release on a git commit.
+[.github/workflows/release-on-commit.yaml](/.github/workflows/release-on-commit.yaml)
+
+Example on how a Github action can create a release draft, from a manual trigger.<br>
 [.github/workflows/draft-release.yaml](/.github/workflows/draft-release.yaml)
 
 ## Features
@@ -42,3 +45,6 @@ GOARM=6 GOOS=linux GOARCH=arm go build -ldflags "-X main.buildVersion=$INPUT_VER
 ## Other inspirations
 * Maybe name the assets like rclone-v1.53.4-osx-amd64.zip
 * Create a fat macho binary for macOS with amd+arm
+
+## Links
+* https://sanderknape.com/2021/01/go-crazy-github-actions/
