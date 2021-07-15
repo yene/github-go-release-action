@@ -17,7 +17,7 @@ on:
 jobs:
   build:
     name: Draft Release
-    runs-on: ubuntu-20.04
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up Go
@@ -27,6 +27,7 @@ jobs:
 
       - name: Persist Version and Commit
         run: |
+          uname
           go version
           timedatectl
           echo $INPUT_VERSION
