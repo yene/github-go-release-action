@@ -30,8 +30,7 @@ jobs:
           echo "VERSION=$VER" >> $GITHUB_ENV
           COMMIT_TITLE=$(git log --format=%B -n 1 HEAD | head -n 1)
           echo "COMMIT_TITLE=$COMMIT_TITLE" >> $GITHUB_ENV
-          COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD | tail -n +3)
-          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
+          git log --format=%B -n 1 HEAD | tail -n +3 > body.md
 
       - name: Persist Commit
         run: |
@@ -74,67 +73,14 @@ jobs:
         with:
           file: ${{ env.NAME }}-windows.exe
 
-      # https://github.com/marketplace/actions/tag-and-release
+      # https://github.com/ncipollo/release-action
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: v${{ env.VERSION }}
-          release_name: ${{ env.COMMIT_TITLE }}
-          body: ${{env.COMMIT_MESSAGE}}
+          artifacts: "${{ env.NAME }}-*"
+          tag: v${{ env.VERSION }}
+          name: ${{ env.COMMIT_TITLE }}
+          bodyFile: "body.md"
+          token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
-          prerelease: false
-
-      # https://github.com/actions/upload-release-asset
-      - name: Upload Release macOS amd64
-        id: upload-release-asset-macos
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ env.NAME }}-macos
-          asset_name: ${{ env.NAME }}-macos
-          asset_content_type: application/octet-stream
-      - name: Upload Release macOS arm64
-        id: upload-release-asset-macos-arm
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ env.NAME }}-macos-arm
-          asset_name: ${{ env.NAME }}-macos-arm
-          asset_content_type: application/octet-stream
-      - name: Upload Release Linux
-        id: upload-release-asset-linux
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ env.NAME }}-linux
-          asset_name: ${{ env.NAME }}-linux
-          asset_content_type: application/octet-stream
-      - name: Upload Release Linux Arm
-        id: upload-release-asset-linux-arm
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ env.NAME }}-linux-arm
-          asset_name: ${{ env.NAME }}-linux-arm
-          asset_content_type: application/octet-stream
-      - name: Upload Release Windows
-        id: upload-release-asset-windows
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ env.NAME }}-windows.exe
-          asset_name: ${{ env.NAME }}-windows.exe
-          asset_content_type: application/octet-stream
