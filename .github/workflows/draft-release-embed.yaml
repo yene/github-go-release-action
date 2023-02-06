@@ -57,10 +57,10 @@ jobs:
 
       - name: Build macOS arm64
         run: env GOOS=darwin GOARCH=arm64 go build -o ${NAME}-macos-arm
-      - name: UPX macOS arm64
-        uses: crazy-max/ghaction-upx@v2
-        with:
-          files: ${{ env.NAME }}-macos-arm
+      # - name: UPX macOS arm64
+      #   uses: crazy-max/ghaction-upx@v2
+      #   with:
+      #     files: ${{ env.NAME }}-macos-arm
 
       - name: Build Windows
         run: env GOOS=windows GOARCH=amd64 go build -o ${NAME}-windows.exe

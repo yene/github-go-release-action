@@ -13,6 +13,7 @@ Example on how a Github action can create a release draft, from a manual trigger
 - [x] include version and Git hash in binary
 - [x] compress build with upx
 - [x] Example how to use embed to read the version
+- [ ] upx for macos arm
 
 ## How to make Universal Golang Binary for macOS with Go 1.16
 > ! upx does not work with multiple archs
