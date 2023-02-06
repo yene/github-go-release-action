@@ -1,5 +1,5 @@
 # manually trigger the action to create a release draft
-name: MacOS
+name: Draft Release
 
 env:
   NAME: helloworld
@@ -10,14 +10,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version"
+        description: "Version (without v)"
         required: true
         default: "0.1.0"
 
 jobs:
   build:
     name: Draft Release
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Set up Go
@@ -27,8 +27,8 @@ jobs:
 
       - name: Persist Version and Commit
         run: |
-          uname
           go version
+          timedatectl
           echo $INPUT_VERSION
           echo $INPUT_VERSION > version.txt
           echo $GITHUB_SHA
