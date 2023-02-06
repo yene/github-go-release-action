@@ -1,5 +1,5 @@
 # manually trigger the action to create a release draft
-name: Draft Release
+name: Draft Release (using embed)
 
 env:
   NAME: helloworld
@@ -38,7 +38,7 @@ jobs:
       - name: UPX Linux
         uses: crazy-max/ghaction-upx@v2
         with:
-          file: ${{env.NAME}}-linux
+          files: ${{env.NAME}}-linux
 
       - name: Build Linux arm
         # GOARM=6 (Raspberry Pi A, A+, B, B+, Zero) GOARM=7 (Raspberry Pi 2, 3)
@@ -46,28 +46,28 @@ jobs:
       - name: UPX Linux arm
         uses: crazy-max/ghaction-upx@v2
         with:
-          file: ${{env.NAME}}-linux-arm
+          files: ${{env.NAME}}-linux-arm
 
       - name: Build macOS amd64
         run: env GOOS=darwin GOARCH=amd64 go build -o ${NAME}-macos
       - name: UPX macOS amd64
         uses: crazy-max/ghaction-upx@v2
         with:
-          file: ${{ env.NAME }}-macos
+          files: ${{ env.NAME }}-macos
 
       - name: Build macOS arm64
         run: env GOOS=darwin GOARCH=arm64 go build -o ${NAME}-macos-arm
       - name: UPX macOS arm64
         uses: crazy-max/ghaction-upx@v2
         with:
-          file: ${{ env.NAME }}-macos-arm
+          files: ${{ env.NAME }}-macos-arm
 
       - name: Build Windows
         run: env GOOS=windows GOARCH=amd64 go build -o ${NAME}-windows.exe
       - name: UPX Windows
         uses: crazy-max/ghaction-upx@v2
         with:
-          file: ${{ env.NAME }}-windows.exe
+          files: ${{ env.NAME }}-windows.exe
 
         # https://github.com/ncipollo/release-action
       - name: Create Release
