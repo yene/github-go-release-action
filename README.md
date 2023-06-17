@@ -12,8 +12,23 @@ Example on how a Github action can create a release draft, from a manual trigger
 - [x] build for windows
 - [x] include version and Git hash in binary
 - [x] compress build with upx
-- [x] Example how to use embed to read the version
-- [ ] upx for macos arm
+- [ ] upx for macos arm (currently upx does not work with mac arm)
+
+## Alternative way to read Git commit from build
+After 1.18+ the Git commit is included in the debug information per default and can be read like this:
+```Go
+	vcsRevision := ""
+	info, ok := debug.ReadBuildInfo()
+	if ok {
+		for _, kv := range info.Settings {
+			switch kv.Key {
+			case "vcs.revision":
+				vcsRevision = kv.Value
+			}
+		}
+	}
+	fmt.Println(vcsRevision)
+```
 
 ## How to make Universal Golang Binary for macOS with Go 1.16
 > ! upx does not work with multiple archs
